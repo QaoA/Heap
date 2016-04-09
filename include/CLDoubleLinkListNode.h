@@ -8,8 +8,11 @@
 class CLDoubleLinkListNode
 {
 private:
-    CLDoubleLinkListNode * m_pvNext;
-    CLDoubleLinkListNode * m_pvPrevious;
+    CLDoubleLinkListNode * m_pNext;
+    CLDoubleLinkListNode * m_pPrevious;
+public:
+    CLDoubleLinkListNode();
+    CLDoubleLinkListNode(CLDoubleLinkListNode * pNext,CLDoubleLinkListNode * pPrevious);
 };
 
 #endif //MALLOC_3_CPP_CLDOUBLELINKLISTNODE_H
