@@ -20,7 +20,10 @@ private:
         CLDoubleLinkListNode m_doubleListNode;
     };
 public:
-    CLChunk(void * pvChunk);
+    explicit CLChunk(void * pvChunk);
+    CLChunk(void * pvChunk, unsigned long ulChunkSize);
+public:
+    //TODO split merge remove append get set
 };
 
 

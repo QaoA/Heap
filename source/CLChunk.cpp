@@ -11,3 +11,10 @@ m_headOrFoot(pvChunk)
 {
 
 }
+
+CLChunk::CLChunk(void * pvChunk, unsigned long ulChunkSize):
+m_pvChunk(pvChunk),
+m_headOrFoot(ulChunkSize)
+{
+
+}
