@@ -13,7 +13,12 @@ class CLSingleLinkListNode
 private:
     CLSingleLinkListNode * m_pNext;
 public:
-    CLSingleLinkListNode(CLSingleLinkListNode * pNext = this);
+    explicit CLSingleLinkListNode(CLSingleLinkListNode * pNext = NULL);
+public:
+    explicit void AppendNextNode(CLSingleLinkListNode * pNextNode);
+    explicit void RemoveFromList(CLSingleLinkListNode * pPreviousNode);
+    explicit void SetNextNode(CLSingleLinkListNode * pNextNode);
+    CLSingleLinkListNode * GetNextNode();
 };
 
 #endif //MALLOC_3_CPP_CLSINGLELINKLISTNODE_H

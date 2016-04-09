@@ -12,7 +12,14 @@ private:
     CLDoubleLinkListNode * m_pPrevious;
 public:
     CLDoubleLinkListNode();
-    CLDoubleLinkListNode(CLDoubleLinkListNode * pNext,CLDoubleLinkListNode * pPrevious);
+    CLDoubleLinkListNode(CLDoubleLinkListNode * pNextNode,CLDoubleLinkListNode * pPreviousNode);
+public:
+    void AppendToList(CLDoubleLinkListNode * pPreviousNode,CLDoubleLinkListNode * pNextNode);
+    void RemoveFromList();
+    void SetPreviousNode(CLDoubleLinkListNode * pPreviousNode);
+    void SetNextNode(CLDoubleLinkListNode * pNextNode);
+    CLDoubleLinkListNode * GetNextNode();
+    CLDoubleLinkListNode * GetPreviousNode();
 };
 
 #endif //MALLOC_3_CPP_CLDOUBLELINKLISTNODE_H

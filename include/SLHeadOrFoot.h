@@ -22,6 +22,11 @@ public:
     SLHeadOrFoot(void* chunkHeadOrFoot);
     SLHeadOrFoot(SLHeadOrFoot& headOrFoot);
     SLHeadOrFoot(unsigned long chunkSize = 0,EMExistStatus status = FREE);
+public:
+    void SetExistStatus(EMExistStatus existStatus);
+    void SetChunkSize(unsigned long chunkSize);
+    EMExistStatus GetExistStatus();
+    unsigned long GetChunkSize();
 };
 
 #endif //MALLOC_3_CPP_SLHEADORFOOT_H
