@@ -12,6 +12,7 @@ enum EMExistStatus
     FREE = 0x2,
 };
 
+
 struct SLHeadOrFoot
 {
 private:
