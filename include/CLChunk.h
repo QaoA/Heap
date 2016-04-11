@@ -20,24 +20,29 @@ private:
         CLSingleLinkListNode m_singleListNode;
         CLDoubleLinkListNode m_doubleListNode;
     };
+private:
+
 public:
     explicit CLChunk(void * pvChunk);
     CLChunk(void * pvChunk, unsigned long ulChunkSize);
+    ~CLChunk();
 public:
     //TODO split merge remove append
     void SetChunkPointer(void * pvChunk);
     void SetSize(unsigned long ulSize);
     void SetExistStatus(EMExistStatus status);
     void * GetChunkPointer();
-    void * GetNextChunk();
-    void * GetPreviousChunkFoot();
     unsigned long GetSize();
     EMExistStatus GetExistStatus();
 public:
-    static
-    static void Split(const unsigned long ulNewChunkSize,CLChunk & roldChunk,CLChunk & rNewChunk,CLChunk & rRestChunk);
-    //void Merge(const CLChunk & rPreviousChunk,const CLChunk & rChunk_2,CLChunk & rNewChunk);
-    //void RemoveFromList();
+    void * GetPysicalNextChunk();
+    void * GetPysicalPreviousChunkFoot();
+    void FlushToMemory();
+public:
+    static void Split(const unsigned long ulNewChunkSize,CLChunk & roldChunk,CLChunk & rRestChunk);
+    static void Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk);
+    static void RemoveFromDoubleLinkList();
+    static void RemoveFromSingleLinkList(CLChunk & rPreviousChunk);
     //void AppendToList(CLChunk & rPreviousChunk, CLChunk & rNextChunk);
 };
 

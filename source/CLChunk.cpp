@@ -21,6 +21,11 @@ m_headOrFoot(ulChunkSize)
 
 }
 
+CLChunk::~CLChunk()
+{
+    FlushToMemory();
+}
+
 void CLChunk::SetChunkPointer(void * pvChunk)
 {
     this->m_pvChunk = pvChunk;
@@ -41,18 +46,6 @@ void * CLChunk::GetChunkPointer()
     return m_pvChunk;
 }
 
-void * CLChunk::GetNextChunk()
-{
-    unsigned long ulNextChunkHead = static_cast<unsigned long>(m_pvChunk) + m_headOrFoot.GetChunkSize();
-    return static_cast<void *>(ulNextChunkHead);
-}
-
-void * CLChunk::GetPreviousChunkFoot()
-{
-    unsigned long ulPreviousChunkFoot = static_cast<unsigned long>(m_pvChunk) - PER_CONTROL_UNIT_SIZE;
-    return static_cast<void *>(ulPreviousChunkFoot);
-}
-
 unsigned long CLChunk::GetSize()
 {
     return m_headOrFoot.GetChunkSize();
@@ -63,15 +56,47 @@ EMExistStatus CLChunk::GetExistStatus()
     return m_headOrFoot.GetExistStatus();
 }
 
-void CLChunk::Split(const unsigned long ulNewChunkSize,CLChunk & oldChunk,CLChunk & rNewChunk,CLChunk & rRestChunk)
+void * CLChunk::GetPysicalNextChunk()
+{
+    unsigned long ulNextChunkHead = static_cast<unsigned long>(m_pvChunk) + m_headOrFoot.GetChunkSize();
+    return static_cast<void *>(ulNextChunkHead);
+}
+
+void * CLChunk::GetPysicalPreviousChunkFoot()
+{
+    unsigned long ulPreviousChunkFoot = static_cast<unsigned long>(m_pvChunk) - PER_CONTROL_UNIT_SIZE;
+    return static_cast<void *>(ulPreviousChunkFoot);
+}
+//TODO complete this function
+void CLChunk::FlushToMemory()
+{
+    if(m_pvChunk != NULL)
+    {
+
+    }
+}
+
+static void CLChunk::Split(const unsigned long ulNewChunkSize,CLChunk & oldChunk,CLChunk & rRestChunk)
 {
     assert(ulNewChunkSize < oldChunk.GetSize() + MIN_ALLOCATE_BLOCK_SIZE);
 
-    rNewChunk.SetChunkPointer(oldChunk.GetChunkPointer());
-    rNewChunk.SetSize(ulNewChunkSize);
-    rNewChunk.SetExistStatus(FREE);
+    oldChunk.SetSize(ulNewChunkSize);
 
-    rRestChunk.SetChunkPointer(rNewChunk.GetNextChunk());
+    rRestChunk.SetChunkPointer(oldChunk.GetPysicalNextChunk());
     rRestChunk.SetSize(oldChunk.GetSize() - ulNewChunkSize);
     rRestChunk.SetExistStatus(FREE);
+}
+
+static void CLChunk::Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk)
+{
+    assert(rPreviousChunk.GetPysicalNextChunk() == rNextChunk.GetChunkPointer());
+
+    rPreviousChunk.SetSize(rPreviousChunk.GetSize() + rNextChunk.GetSize());
+    rNextChunk.SetChunkPointer(NULL);
+    rNextChunk.SetSize(NULL);
+}
+
+static void CLChunk::RemoveFromDoubleLinkList()
+{
+
 }

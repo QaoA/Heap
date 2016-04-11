@@ -20,14 +20,16 @@ private:
     int m_undefined:2;
     EMExistStatus m_emChunkStatus:2;
 public:
-    SLHeadOrFoot(void* chunkHeadOrFoot);
-    SLHeadOrFoot(SLHeadOrFoot& headOrFoot);
-    SLHeadOrFoot(unsigned long chunkSize = 0,EMExistStatus status = FREE);
+    SLHeadOrFoot(void* pvChunkHeadOrFoot);
+    SLHeadOrFoot(SLHeadOrFoot& rHeadOrFoot);
+    SLHeadOrFoot(unsigned long ulChunkSize = 0,EMExistStatus emStatus = FREE);
 public:
-    void SetExistStatus(EMExistStatus existStatus);
-    void SetChunkSize(unsigned long chunkSize);
+    void SetExistStatus(EMExistStatus emStatus);
+    void SetChunkSize(unsigned long ulChunkSize);
     EMExistStatus GetExistStatus();
     unsigned long GetChunkSize();
+public:
+    void FlushToMemory(void * pvAddress);
 };
 
 #endif //MALLOC_3_CPP_SLHEADORFOOT_H
