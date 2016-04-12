@@ -96,12 +96,24 @@ static void CLChunk::Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk)
     rNextChunk.SetSize(NULL);
 }
 
-static void CLChunk::AppendToSingleLinkList(CLChunk & rPrivousChunk)
+static void CLChunk::AppendToSingleLinkList(CLChunk & rPrivousChunk,CLChunk & rCurrentChunk)
 {
-    rPrivousChunk.m_singleListNode
+    CLSingleLinkListNode::AppendNextNode(rPrivousChunk.m_singleListNode,rCurrentChunk.m_singleListNode);
 }
 
-static void CLChunk::RemoveFromDoubleLinkList()
+static void CLChunk::RemoveFromSingleLinkList(CLChunk & rPreviousChunk)
 {
+    CLSingleLinkListNode::RemoveFromList(rPreviousChunk.m_singleListNode);
+}
 
+static void CLChunk::AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk & rNextChunk)
+{
+    CLDoubleLinkListNode::AppendToList(rPreviousChunk.m_doubleListNode,
+                                       rCurrentChunk.m_doubleListNode,
+                                       rNextChunk.m_doubleListNode);
+}
+
+static void CLChunk::RemoveFromDoubleLinkList(CLChunk & rCurrentChunk)
+{
+    CLDoubleLinkListNode::RemoveFromList(rCurrentChunk.m_doubleListNode);
 }
