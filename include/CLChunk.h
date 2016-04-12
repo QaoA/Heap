@@ -9,6 +9,7 @@
 #include "CLSingleLinkListNode.h"
 #include "CLDoubleLinkListNode.h"
 
+#define GET_OFFSET(CLASS,MEMBER) reinterpret_cast<unsigned long>(&(reinterpret_cast<CLASS *>(0) -> MEMBER))
 
 class CLChunk
 {
@@ -35,20 +36,21 @@ public:
     unsigned long GetSize();
     EMExistStatus GetExistStatus();
 public:
-    CLChunk * GetLogicNextChunk();
+    CLChunk * GetLogicNextChunkBySingleLinkList();
+    CLChunk * GetLogicNextChunkByDoubleLinkList();
     CLChunk * GetLogicPreviousChunk();
-    void * GetPysicalNextChunk();
-    void * GetPysicalPreviousChunkFoot();
+    void * GetPhysicalNextChunk();
+    void * GetPhysicalPreviousChunkFoot();
     void FlushToMemory();
 public:
+    static CLChunk * GetChunkByNode(CLSingleLinkListNode *pSingleNode);
+    static CLChunk * GetChunkByNode(CLDoubleLinkListNode *pDoubleNode);
     static void Split(const unsigned long ulNewChunkSize,CLChunk & roldChunk,CLChunk & rRestChunk);
     static void Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk);
-    static void AppendToSingleLinkList(CLChunk & rPrivousChunk,CLChunk & rCurrentChunk);
+    static void AppendToSingleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk);
     static void RemoveFromSingleLinkList(CLChunk & rPreviousChunk);
     static void AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk & rNextChunk);
     static void RemoveFromDoubleLinkList(CLChunk & rCurrentChunk);
 };
-
-
 
 #endif //MALLOC_3_CPP_CLCHUNK_H

@@ -56,18 +56,28 @@ EMExistStatus CLChunk::GetExistStatus()
     return m_headOrFoot.GetExistStatus();
 }
 
-CLChunk * CLChunk::GetLogicNextChunk()
+CLChunk * CLChunk::GetLogicNextChunkBySingleLinkList()()
 {
-
+    return GetChunkByNode(m_singleListNode.GetNextNode());
 }
 
-void * CLChunk::GetPysicalNextChunk()
+CLChunk * CLChunk::GetLogicNextChunkByDoubleLinkList()
+{
+    return GetChunkByNode(m_doubleListNode.GetNextNode());
+}
+
+CLChunk * CLChunk::GetLogicPreviousChunk()
+{
+    return GetChunkByNode(m_doubleListNode.GetPreviousNode());
+}
+
+void * CLChunk::GetPhysicalNextChunk()
 {
     unsigned long ulNextChunkHead = reinterpret_cast<unsigned long>(m_pvChunk) + m_headOrFoot.GetChunkSize();
     return reinterpret_cast<void *>(ulNextChunkHead);
 }
 
-void * CLChunk::GetPysicalPreviousChunkFoot()
+void * CLChunk::GetPhysicalPreviousChunkFoot()
 {
     unsigned long ulPreviousChunkFoot = reinterpret_cast<unsigned long>(m_pvChunk) - PER_CONTROL_UNIT_SIZE;
     return reinterpret_cast<void *>(ulPreviousChunkFoot);
@@ -81,20 +91,32 @@ void CLChunk::FlushToMemory()
     }
 }
 
+CLChunk * CLChunk::GetChunkByNode(CLSingleLinkListNode *pSingleNode)
+{
+    unsigned long ulOffset = GET_OFFSET(CLChunk,m_singleListNode);
+    return reinterpret_cast<CLChunk *>(static_cast<unsigned long>(pSingleNode) - ulOffset);
+}
+
+CLChunk * CLChunk::GetChunkByNode(CLDoubleLinkListNode *pDoubleNode)
+{
+    unsigned long ulOffset = GET_OFFSET(CLChunk,m_doubleListNode);
+    return reinterpret_cast<CLChunk *>(static_cast<unsigned long>(pDoubleNode) - ulOffset);
+}
+
 void CLChunk::Split(const unsigned long ulNewChunkSize,CLChunk & oldChunk,CLChunk & rRestChunk)
 {
     assert(ulNewChunkSize < oldChunk.GetSize() + MIN_ALLOCATE_BLOCK_SIZE);
 
     oldChunk.SetSize(ulNewChunkSize);
 
-    rRestChunk.SetChunkPointer(oldChunk.GetPysicalNextChunk());
+    rRestChunk.SetChunkPointer(oldChunk.GetPhysicalNextChunk());
     rRestChunk.SetSize(oldChunk.GetSize() - ulNewChunkSize);
     rRestChunk.SetExistStatus(FREE);
 }
 
 void CLChunk::Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk)
 {
-    assert(rPreviousChunk.GetPysicalNextChunk() == rNextChunk.GetChunkPointer());
+    assert(rPreviousChunk.GetPhysicalNextChunk() == rNextChunk.GetChunkPointer());
 
     rPreviousChunk.SetSize(rPreviousChunk.GetSize() + rNextChunk.GetSize());
     rNextChunk.SetChunkPointer(NULL);
