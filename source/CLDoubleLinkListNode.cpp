@@ -19,16 +19,6 @@ m_pNext(pNextNode),m_pPrevious(pPreviousNode)
 
 }
 
-void CLDoubleLinkListNode::SetPreviousNode(CLDoubleLinkListNode * pPreviousNode)
-{
-    this->m_pPrevious = pPreviousNode;
-}
-
-void CLDoubleLinkListNode::SetNextNode(CLDoubleLinkListNode *pNextNode)
-{
-    this->m_pNext = pNextNode;
-}
-
 CLDoubleLinkListNode * CLDoubleLinkListNode::GetNextNode()
 {
     return this->m_pNext;

@@ -14,8 +14,6 @@ public:
     CLDoubleLinkListNode();
     CLDoubleLinkListNode(CLDoubleLinkListNode * pNextNode,CLDoubleLinkListNode * pPreviousNode);
 public:
-    void SetPreviousNode(CLDoubleLinkListNode * pPreviousNode);
-    void SetNextNode(CLDoubleLinkListNode * pNextNode);
     CLDoubleLinkListNode * GetNextNode();
     CLDoubleLinkListNode * GetPreviousNode();
 public:
