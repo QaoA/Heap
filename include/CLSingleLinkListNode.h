@@ -15,10 +15,10 @@ private:
 public:
     explicit CLSingleLinkListNode(CLSingleLinkListNode * pNext = NULL);
 public:
-    explicit void AppendNextNode(CLSingleLinkListNode * pNextNode);
-    explicit void RemoveFromList(CLSingleLinkListNode * pPreviousNode);
-    explicit void SetNextNode(CLSingleLinkListNode * pNextNode);
     CLSingleLinkListNode * GetNextNode();
+public:
+    static explicit void AppendNextNode(CLSingleLinkListNode & rPreviousNode,CLSingleLinkListNode & rCurrentNode);
+    static explicit void RemoveFromList(CLSingleLinkListNode & rPreviousNode);
 };
 
 #endif //MALLOC_3_CPP_CLSINGLELINKLISTNODE_H

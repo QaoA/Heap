@@ -96,6 +96,11 @@ static void CLChunk::Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk)
     rNextChunk.SetSize(NULL);
 }
 
+static void CLChunk::AppendToSingleLinkList(CLChunk & rPrivousChunk)
+{
+    rPrivousChunk.m_singleListNode
+}
+
 static void CLChunk::RemoveFromDoubleLinkList()
 {
 

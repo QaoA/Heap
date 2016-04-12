@@ -10,29 +10,23 @@ m_pNext(pNext)
 {
 
 }
-void CLSingleLinkListNode::AppendNextNode(CLSingleLinkListNode * pNextNode)
-{
-    CLSingleLinkListNode * pOriginNextNode = this->m_pNext;
-    SetNextNode(pNextNode);
-    if(pNextNode)
-    {
-        pNextNode->SetNextNode(pOriginNextNode);
-    }
-}
-
-void CLSingleLinkListNode::RemoveFromList(CLSingleLinkListNode * pPreviousNode)
-{
-    assert(pPreviousNode && pPreviousNode->GetNextNode() == this);
-    pPreviousNode->SetNextNode(this->GetNextNode());
-    this->SetNextNode(NULL);
-}
-
-void CLSingleLinkListNode::SetNextNode(CLSingleLinkListNode *pNextNode)
-{
-    this->m_pNext = pNextNode;
-}
 
 CLSingleLinkListNode * CLSingleLinkListNode::GetNextNode()
 {
     return this->m_pNext;
+}
+
+static explicit void CLSingleLinkListNode::AppendNextNode(CLSingleLinkListNode & rPreviousNode,CLSingleLinkListNode & rCurrentNode)
+{
+    CLSingleLinkListNode * pOriginNextNode = rPreviousNode.m_pNext;
+    rPreviousNode.m_pNext = &rCurrentNode;
+    rCurrentNode.m_pNext = pOriginNextNode;
+}
+
+static void CLSingleLinkListNode::RemoveFromList(CLSingleLinkListNode & pPreviousNode)
+{
+    CLSingleLinkListNode * pCurrentNode = pPreviousNode.m_pNext;
+    CLSingleLinkListNode * pNextNode = pCurrentNode->m_pNext;
+    pPreviousNode.m_pNext = pNextNode;
+    pCurrentNode->m_pNext = NULL;
 }

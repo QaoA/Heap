@@ -41,6 +41,8 @@ public:
 public:
     static void Split(const unsigned long ulNewChunkSize,CLChunk & roldChunk,CLChunk & rRestChunk);
     static void Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk);
+    static void AppendToSingleLinkList(CLChunk & rPrivousChunk);
+    static void AppendToDoubleLinkList();
     static void RemoveFromDoubleLinkList();
     static void RemoveFromSingleLinkList(CLChunk & rPreviousChunk);
     //void AppendToList(CLChunk & rPreviousChunk, CLChunk & rNextChunk);
