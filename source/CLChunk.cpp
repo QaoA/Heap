@@ -56,16 +56,21 @@ EMExistStatus CLChunk::GetExistStatus()
     return m_headOrFoot.GetExistStatus();
 }
 
+CLChunk * CLChunk::GetLogicNextChunk()
+{
+
+}
+
 void * CLChunk::GetPysicalNextChunk()
 {
-    unsigned long ulNextChunkHead = static_cast<unsigned long>(m_pvChunk) + m_headOrFoot.GetChunkSize();
-    return static_cast<void *>(ulNextChunkHead);
+    unsigned long ulNextChunkHead = reinterpret_cast<unsigned long>(m_pvChunk) + m_headOrFoot.GetChunkSize();
+    return reinterpret_cast<void *>(ulNextChunkHead);
 }
 
 void * CLChunk::GetPysicalPreviousChunkFoot()
 {
-    unsigned long ulPreviousChunkFoot = static_cast<unsigned long>(m_pvChunk) - PER_CONTROL_UNIT_SIZE;
-    return static_cast<void *>(ulPreviousChunkFoot);
+    unsigned long ulPreviousChunkFoot = reinterpret_cast<unsigned long>(m_pvChunk) - PER_CONTROL_UNIT_SIZE;
+    return reinterpret_cast<void *>(ulPreviousChunkFoot);
 }
 //TODO complete this function
 void CLChunk::FlushToMemory()
@@ -76,7 +81,7 @@ void CLChunk::FlushToMemory()
     }
 }
 
-static void CLChunk::Split(const unsigned long ulNewChunkSize,CLChunk & oldChunk,CLChunk & rRestChunk)
+void CLChunk::Split(const unsigned long ulNewChunkSize,CLChunk & oldChunk,CLChunk & rRestChunk)
 {
     assert(ulNewChunkSize < oldChunk.GetSize() + MIN_ALLOCATE_BLOCK_SIZE);
 
@@ -87,7 +92,7 @@ static void CLChunk::Split(const unsigned long ulNewChunkSize,CLChunk & oldChunk
     rRestChunk.SetExistStatus(FREE);
 }
 
-static void CLChunk::Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk)
+void CLChunk::Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk)
 {
     assert(rPreviousChunk.GetPysicalNextChunk() == rNextChunk.GetChunkPointer());
 
@@ -96,24 +101,24 @@ static void CLChunk::Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk)
     rNextChunk.SetSize(NULL);
 }
 
-static void CLChunk::AppendToSingleLinkList(CLChunk & rPrivousChunk,CLChunk & rCurrentChunk)
+void CLChunk::AppendToSingleLinkList(CLChunk & rPrivousChunk,CLChunk & rCurrentChunk)
 {
     CLSingleLinkListNode::AppendNextNode(rPrivousChunk.m_singleListNode,rCurrentChunk.m_singleListNode);
 }
 
-static void CLChunk::RemoveFromSingleLinkList(CLChunk & rPreviousChunk)
+void CLChunk::RemoveFromSingleLinkList(CLChunk & rPreviousChunk)
 {
     CLSingleLinkListNode::RemoveFromList(rPreviousChunk.m_singleListNode);
 }
 
-static void CLChunk::AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk & rNextChunk)
+void CLChunk::AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk & rNextChunk)
 {
     CLDoubleLinkListNode::AppendToList(rPreviousChunk.m_doubleListNode,
                                        rCurrentChunk.m_doubleListNode,
                                        rNextChunk.m_doubleListNode);
 }
 
-static void CLChunk::RemoveFromDoubleLinkList(CLChunk & rCurrentChunk)
+void CLChunk::RemoveFromDoubleLinkList(CLChunk & rCurrentChunk)
 {
     CLDoubleLinkListNode::RemoveFromList(rCurrentChunk.m_doubleListNode);
 }

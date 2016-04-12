@@ -35,6 +35,8 @@ public:
     unsigned long GetSize();
     EMExistStatus GetExistStatus();
 public:
+    CLChunk * GetLogicNextChunk();
+    CLChunk * GetLogicPreviousChunk();
     void * GetPysicalNextChunk();
     void * GetPysicalPreviousChunkFoot();
     void FlushToMemory();

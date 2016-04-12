@@ -29,7 +29,7 @@ CLDoubleLinkListNode * CLDoubleLinkListNode::GetPreviousNode()
     return this->m_pPrevious;
 }
 
-static void CLDoubleLinkListNode::AppendToList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode,CLDoubleLinkListNode & rNextNode)
+void CLDoubleLinkListNode::AppendToList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode,CLDoubleLinkListNode & rNextNode)
 {
     rPreviousNode.m_pNext = &rCurrentNode;
     rNextNode.m_pPrevious = &rCurrentNode;
@@ -37,7 +37,7 @@ static void CLDoubleLinkListNode::AppendToList(CLDoubleLinkListNode & rPreviousN
     rCurrentNode.m_pPrevious = &rPreviousNode;
 }
 
-static void CLDoubleLinkListNode::RemoveFromList(CLDoubleLinkListNode & rCurrentNode)
+void CLDoubleLinkListNode::RemoveFromList(CLDoubleLinkListNode & rCurrentNode)
 {
     CLDoubleLinkListNode * pPreviousNode = rCurrentNode.m_pPrevious;
     CLDoubleLinkListNode * pNextNode = rCurrentNode.m_pNext;

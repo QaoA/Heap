@@ -17,8 +17,8 @@ public:
 public:
     CLSingleLinkListNode * GetNextNode();
 public:
-    static explicit void AppendNextNode(CLSingleLinkListNode & rPreviousNode,CLSingleLinkListNode & rCurrentNode);
-    static explicit void RemoveFromList(CLSingleLinkListNode & rPreviousNode);
+    static void AppendNextNode(CLSingleLinkListNode & rPreviousNode,CLSingleLinkListNode & rCurrentNode);
+    static void RemoveFromList(CLSingleLinkListNode & rPreviousNode);
 };
 
 #endif //MALLOC_3_CPP_CLSINGLELINKLISTNODE_H
