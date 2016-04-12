@@ -24,6 +24,7 @@ private:
 private:
 
 public:
+    CLChunk();
     explicit CLChunk(void * pvChunk);
     CLChunk(void * pvChunk, unsigned long ulChunkSize);
     ~CLChunk();
@@ -49,7 +50,7 @@ public:
     static void Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk);
     static void AppendToSingleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk);
     static void RemoveFromSingleLinkList(CLChunk & rPreviousChunk);
-    static void AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk & rNextChunk);
+    static void AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk);
     static void RemoveFromDoubleLinkList(CLChunk & rCurrentChunk);
 };
 

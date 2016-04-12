@@ -6,10 +6,17 @@
 #include "../include/define.h"
 #include <assert.h>
 
+CLChunk::CLChunk():
+m_pvChunk(NULL),
+m_headOrFoot(NULL)
+{
+
+}
 
 CLChunk::CLChunk(void * pvChunk):
 m_pvChunk(pvChunk),
-m_headOrFoot(pvChunk)
+m_headOrFoot(pvChunk),
+m_doubleListNode(pvChunk)
 {
 
 }
@@ -23,7 +30,7 @@ m_headOrFoot(ulChunkSize)
 
 CLChunk::~CLChunk()
 {
-    FlushToMemory();
+
 }
 
 void CLChunk::SetChunkPointer(void * pvChunk)
@@ -133,7 +140,7 @@ void CLChunk::RemoveFromSingleLinkList(CLChunk & rPreviousChunk)
     CLSingleLinkListNode::RemoveFromList(rPreviousChunk.m_singleListNode);
 }
 
-void CLChunk::AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk & rNextChunk)
+void CLChunk::AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk)
 {
     CLDoubleLinkListNode::AppendToList(rPreviousChunk.m_doubleListNode,
                                        rCurrentChunk.m_doubleListNode,

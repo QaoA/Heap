@@ -13,6 +13,7 @@ class CLSingleLinkListNode
 private:
     CLSingleLinkListNode * m_pNext;
 public:
+    explicit CLSingleLinkListNode(void * pvSingleListNodeAddress);
     explicit CLSingleLinkListNode(CLSingleLinkListNode * pNext = NULL);
 public:
     CLSingleLinkListNode * GetNextNode();

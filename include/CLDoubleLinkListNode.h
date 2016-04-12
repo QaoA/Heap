@@ -12,12 +12,13 @@ private:
     CLDoubleLinkListNode * m_pPrevious;
 public:
     CLDoubleLinkListNode();
+    CLDoubleLinkListNode(void * pvDoubleListNodeAddress);
     CLDoubleLinkListNode(CLDoubleLinkListNode * pNextNode,CLDoubleLinkListNode * pPreviousNode);
 public:
     CLDoubleLinkListNode * GetNextNode();
     CLDoubleLinkListNode * GetPreviousNode();
 public:
-    static void AppendToList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode,CLDoubleLinkListNode & rNextNode);
+    static void AppendToList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode);
     static void RemoveFromList(CLDoubleLinkListNode & rCurrentNode);
 };
 

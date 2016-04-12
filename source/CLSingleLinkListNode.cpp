@@ -11,6 +11,12 @@ m_pNext(pNext)
 
 }
 
+explicit CLSingleLinkListNode::CLSingleLinkListNode(void * pvSingleListNodeAddress):
+m_pNext(*reinterpret_cast<CLSingleLinkListNode **>(pvSingleListNodeAddress))
+{
+
+}
+
 CLSingleLinkListNode * CLSingleLinkListNode::GetNextNode()
 {
     return this->m_pNext;
