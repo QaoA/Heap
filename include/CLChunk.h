@@ -50,7 +50,7 @@ public:
     static void Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk);
     static void AppendToSingleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk);
     static void RemoveFromSingleLinkList(CLChunk & rPreviousChunk);
-    static void AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk);
+    static void AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk * pNextChunk);
     static void RemoveFromDoubleLinkList(CLChunk & rCurrentChunk);
 };
 
