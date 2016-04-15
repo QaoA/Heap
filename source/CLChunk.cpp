@@ -140,11 +140,11 @@ void CLChunk::RemoveFromSingleLinkList(CLChunk & rPreviousChunk)
     CLSingleLinkListNode::RemoveFromList(rPreviousChunk.m_singleListNode);
 }
 
-void CLChunk::AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk)
+void CLChunk::AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk * pNextChunk)
 {
     CLDoubleLinkListNode::AppendToList(rPreviousChunk.m_doubleListNode,
                                        rCurrentChunk.m_doubleListNode,
-                                       rNextChunk.m_doubleListNode);
+                                       rNextChunk->m_doubleListNode);
 }
 
 void CLChunk::RemoveFromDoubleLinkList(CLChunk & rCurrentChunk)

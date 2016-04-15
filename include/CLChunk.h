@@ -24,9 +24,9 @@ private:
 private:
 
 public:
-    CLChunk();
-    explicit CLChunk(void * pvChunk);
-    CLChunk(void * pvChunk, unsigned long ulChunkSize);
+    CLChunk();//for array
+    explicit CLChunk(void * pvChunk);//for restore
+    CLChunk(void * pvChunk, unsigned long ulChunkSize);//for normal initial
     ~CLChunk();
 public:
     //TODO split merge remove append

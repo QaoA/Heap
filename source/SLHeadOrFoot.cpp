@@ -6,23 +6,30 @@
 
 #include <string.h>
 
-SLHeadOrFoot::SLHeadOrFoot(void* pvChunkHeadOrFoot)
+SLHeadOrFoot::SLHeadOrFoot():
+ILMemoryFlusher(nullptr),
+m_emChunkStatus(FREE),
+m_ulChunkSize(NULL),
+m_undefined(0)
 {
-    memcpy(this,pvChunkHeadOrFoot, sizeof(SLHeadOrFoot));
 }
 
-SLHeadOrFoot::SLHeadOrFoot(SLHeadOrFoot& rHeadOrFoot):
-        m_ulChunkSize(rHeadOrFoot.m_ulChunkSize),
-        m_undefined(0),
-        m_emChunkStatus(rHeadOrFoot.m_emChunkStatus)
+SLHeadOrFoot::SLHeadOrFoot(void * pvChunkHeadOrFoot):
+ILMemoryFlusher(pvChunkHeadOrFoot),
+m_ulChunkSize((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) >> ALIGN_BIT_LENGTH),
+m_emChunkStatus(reinterpret_cast<EMExistStatus >((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) & (0x1 << ALIGN_BIT_LENGTH))),
+m_undefined(0)
 {
-
+//    m_ulChunkSize = (*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) >> ALIGN_BIT_LENGTH;
+//    m_emChunkStatus = reinterpret_cast<EMExistStatus >((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) & (0x1 << ALIGN_BIT_LENGTH));
+//    m_undefined = 0;
 }
 
-SLHeadOrFoot::SLHeadOrFoot(unsigned long ulChunkSize,EMExistStatus emStatus):
-        m_ulChunkSize(ulChunkSize),
-        m_undefined(0),
-        m_emChunkStatus(emStatus)
+SLHeadOrFoot::SLHeadOrFoot(void * pvChunkHeadOrFoot,unsigned long ulChunkSize = 0,EMExistStatus emStatus = FREE):
+ILMemoryFlusher(pvChunkHeadOrFoot),
+m_ulChunkSize(ulChunkSize),
+m_emChunkStatus(emStatus),
+m_undefined(0)
 {
 
 }
@@ -47,7 +54,7 @@ unsigned long SLHeadOrFoot::GetChunkSize()
     return this->m_ulChunkSize << ALIGN_BIT_LENGTH;
 }
 
-void SLHeadOrFoot::FlushToMemory(void * pvAddress)
+void SLHeadOrFoot::FlushToMemory()
 {
-    memcpy(pvAddress,this,sizeof(SLHeadOrFoot));
+    ILMemoryFlusher
 }
