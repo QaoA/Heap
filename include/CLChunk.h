@@ -22,7 +22,10 @@ private:
         CLDoubleLinkListNode m_doubleListNode;
     };
 private:
-
+    void * GetHead();
+    void * GetFoot();
+    void * GetNextNodeAddress();
+    void * GetPreviousNodeAddress();
 public:
     CLChunk();//for array
     explicit CLChunk(void * pvChunk);//for restore
@@ -42,7 +45,7 @@ public:
     CLChunk * GetLogicPreviousChunk();
     void * GetPhysicalNextChunk();
     void * GetPhysicalPreviousChunkFoot();
-    void FlushToMemory();
+    void FlushToMemory(bool isSingleLinkList);
 public:
     static CLChunk * GetChunkByNode(CLSingleLinkListNode *pSingleNode);
     static CLChunk * GetChunkByNode(CLDoubleLinkListNode *pDoubleNode);
@@ -53,5 +56,4 @@ public:
     static void AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk * pNextChunk);
     static void RemoveFromDoubleLinkList(CLChunk & rCurrentChunk);
 };
-
 #endif //MALLOC_3_CPP_CLCHUNK_H

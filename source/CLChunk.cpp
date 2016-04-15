@@ -7,8 +7,9 @@
 #include <assert.h>
 
 CLChunk::CLChunk():
-m_pvChunk(NULL),
-m_headOrFoot(NULL)
+m_pvChunk(),
+m_headOrFoot(),
+m_doubleListNode()
 {
 
 }
@@ -23,7 +24,9 @@ m_doubleListNode(pvChunk)
 
 CLChunk::CLChunk(void * pvChunk, unsigned long ulChunkSize):
 m_pvChunk(pvChunk),
-m_headOrFoot(ulChunkSize)
+m_headOrFoot(pvChunk,ulChunkSize),
+m_singleListNode(pvChunk),
+m_doubleListNode(pvChunk)
 {
 
 }
@@ -31,6 +34,18 @@ m_headOrFoot(ulChunkSize)
 CLChunk::~CLChunk()
 {
 
+}
+
+void * CLChunk::GetHead()
+{
+    assert(m_pvChunk != nullptr);
+    return m_pvChunk;
+}
+
+void * CLChunk::GetFoot()
+{
+    assert(m_pvChunk != nullptr);
+    return reinterpret_cast<void *>(reinterpret_cast<unsigned long>(m_pvChunk) + PER_CONTROL_UNIT_SIZE);
 }
 
 void CLChunk::SetChunkPointer(void * pvChunk)
@@ -63,7 +78,7 @@ EMExistStatus CLChunk::GetExistStatus()
     return m_headOrFoot.GetExistStatus();
 }
 
-CLChunk * CLChunk::GetLogicNextChunkBySingleLinkList()()
+CLChunk * CLChunk::GetLogicNextChunkBySingleLinkList()
 {
     return GetChunkByNode(m_singleListNode.GetNextNode());
 }
@@ -90,11 +105,11 @@ void * CLChunk::GetPhysicalPreviousChunkFoot()
     return reinterpret_cast<void *>(ulPreviousChunkFoot);
 }
 //TODO complete this function
-void CLChunk::FlushToMemory()
+void CLChunk::FlushToMemory(bool isSingleLinkList)
 {
-    if(m_pvChunk != NULL)
+    if(m_pvChunk != nullptr)
     {
-
+        if(isSingleLinkList)
     }
 }
 
@@ -133,6 +148,7 @@ void CLChunk::Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk)
 void CLChunk::AppendToSingleLinkList(CLChunk & rPrivousChunk,CLChunk & rCurrentChunk)
 {
     CLSingleLinkListNode::AppendNextNode(rPrivousChunk.m_singleListNode,rCurrentChunk.m_singleListNode);
+
 }
 
 void CLChunk::RemoveFromSingleLinkList(CLChunk & rPreviousChunk)
