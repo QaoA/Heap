@@ -7,16 +7,18 @@
 
 #include <stddef.h>
 #include "CLDoubleLinkListNode.h"
+#include "ILMemoryFlusher.h"
 
-class CLSingleLinkListNode
+class CLSingleLinkListNode:public ILMemoryFlusher
 {
 private:
     CLSingleLinkListNode * m_pNext;
 public:
     explicit CLSingleLinkListNode(void * pvSingleListNodeAddress);
-    explicit CLSingleLinkListNode(CLSingleLinkListNode * pNext = NULL);
+    explicit CLSingleLinkListNode(CLSingleLinkListNode * pNext = nullptr);
 public:
     CLSingleLinkListNode * GetNextNode();
+    void FlushToMemory(void * pvWriteStartAddress) override;
 public:
     static void AppendNextNode(CLSingleLinkListNode & rPreviousNode,CLSingleLinkListNode & rCurrentNode);
     static void RemoveFromList(CLSingleLinkListNode & rPreviousNode);

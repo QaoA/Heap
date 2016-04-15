@@ -22,6 +22,11 @@ CLSingleLinkListNode * CLSingleLinkListNode::GetNextNode()
     return this->m_pNext;
 }
 
+void CLSingleLinkListNode::FlushToMemory(void * pvWriteStartAddress)
+{
+    *reinterpret_cast<unsigned long *>(pvWriteStartAddress) = reinterpret_cast<unsigned long>(m_pNext);
+}
+
 void CLSingleLinkListNode::AppendNextNode(CLSingleLinkListNode & rPreviousNode,CLSingleLinkListNode & rCurrentNode)
 {
     CLSingleLinkListNode * pOriginNextNode = rPreviousNode.m_pNext;

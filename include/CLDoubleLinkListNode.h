@@ -5,7 +5,9 @@
 #ifndef MALLOC_3_CPP_CLDOUBLELINKLISTNODE_H
 #define MALLOC_3_CPP_CLDOUBLELINKLISTNODE_H
 
-class CLDoubleLinkListNode
+#include "ILMemoryFlusher.h"
+
+class CLDoubleLinkListNode:ILMemoryFlusher
 {
 private:
     CLDoubleLinkListNode * m_pNext;
@@ -15,6 +17,7 @@ public:
     CLDoubleLinkListNode(void * pvDoubleListNodeAddress);
     CLDoubleLinkListNode(CLDoubleLinkListNode * pNextNode,CLDoubleLinkListNode * pPreviousNode);
 public:
+    void FlushToMemory(void * pvFlushStartAddress);
     CLDoubleLinkListNode * GetNextNode();
     CLDoubleLinkListNode * GetPreviousNode();
 public:

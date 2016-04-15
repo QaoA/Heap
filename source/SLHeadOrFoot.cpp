@@ -6,55 +6,51 @@
 
 #include <string.h>
 
-SLHeadOrFoot::SLHeadOrFoot():
-ILMemoryFlusher(nullptr),
-m_emChunkStatus(FREE),
-m_ulChunkSize(NULL),
+SLHeadOrFoot::m_data::m_data(EMExistStatus emStatus, unsigned long ulChunkSize):
+m_emChunkStatus(emStatus),
+m_ulChunkSize(ulChunkSize),
 m_undefined(0)
+{
+}
+
+SLHeadOrFoot::SLHeadOrFoot():
+m_data(FREE,NULL)
 {
 }
 
 SLHeadOrFoot::SLHeadOrFoot(void * pvChunkHeadOrFoot):
-ILMemoryFlusher(pvChunkHeadOrFoot),
-m_ulChunkSize((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) >> ALIGN_BIT_LENGTH),
-m_emChunkStatus(reinterpret_cast<EMExistStatus >((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) & (0x1 << ALIGN_BIT_LENGTH))),
-m_undefined(0)
+m_data(reinterpret_cast<EMExistStatus >((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) & (0x1 << ALIGN_BIT_LENGTH))
+       ,((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) >> ALIGN_BIT_LENGTH))
 {
-//    m_ulChunkSize = (*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) >> ALIGN_BIT_LENGTH;
-//    m_emChunkStatus = reinterpret_cast<EMExistStatus >((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) & (0x1 << ALIGN_BIT_LENGTH));
-//    m_undefined = 0;
 }
 
 SLHeadOrFoot::SLHeadOrFoot(void * pvChunkHeadOrFoot,unsigned long ulChunkSize = 0,EMExistStatus emStatus = FREE):
-ILMemoryFlusher(pvChunkHeadOrFoot),
-m_ulChunkSize(ulChunkSize),
-m_emChunkStatus(emStatus),
-m_undefined(0)
+m_data(emStatus,ulChunkSize)
 {
 
 }
 
 void SLHeadOrFoot::SetExistStatus(EMExistStatus emStatus)
 {
-    this->m_emChunkStatus = emStatus;
+    this->m_data.m_emChunkStatus = emStatus;
 }
 
 void SLHeadOrFoot::SetChunkSize(unsigned long ulChunkSize)
 {
-    this->m_ulChunkSize = ulChunkSize >> ALIGN_BIT_LENGTH;
+    this->m_data.m_ulChunkSize = ulChunkSize >> ALIGN_BIT_LENGTH;
 }
 
 EMExistStatus SLHeadOrFoot::GetExistStatus()
 {
-    return m_emChunkStatus;
+    return m_data.m_emChunkStatus;
 }
 
 unsigned long SLHeadOrFoot::GetChunkSize()
 {
-    return this->m_ulChunkSize << ALIGN_BIT_LENGTH;
+    return this->m_data.m_ulChunkSize << ALIGN_BIT_LENGTH;
 }
 
-void SLHeadOrFoot::FlushToMemory()
+void SLHeadOrFoot::FlushToMemory(void * pvWriteStartAddress)
 {
-    ILMemoryFlusher
+    *reinterpret_cast<unsigned long *>(pvWriteStartAddress) = *reinterpret_cast<unsigned long*>(&m_data);
 }

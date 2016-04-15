@@ -27,6 +27,13 @@ m_pNext(pNextNode),m_pPrevious(pPreviousNode)
 
 }
 
+void CLDoubleLinkListNode::FlushToMemory(void * pvFlushStartAddress)
+{
+    *reinterpret_cast<unsigned long *>(pvFlushStartAddress) = reinterpret_cast<unsigned long>(m_pNext);
+    *reinterpret_cast<unsigned long *>(reinterpret_cast<unsigned long>(pvFlushStartAddress + PER_CONTROL_UNIT_SIZE))
+            = reinterpret_cast<unsigned long>(m_pPrevious);
+}
+
 CLDoubleLinkListNode * CLDoubleLinkListNode::GetNextNode()
 {
     return this->m_pNext;

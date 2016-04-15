@@ -18,9 +18,13 @@ enum EMExistStatus
 struct SLHeadOrFoot:public ILMemoryFlusher
 {
 private:
-    unsigned long m_ulChunkSize:60;
-    int m_undefined:2;
-    EMExistStatus m_emChunkStatus:2;
+    struct m_data
+    {
+        EMExistStatus m_emChunkStatus:2;
+        int m_undefined:2;
+        unsigned long m_ulChunkSize:60;
+        m_data(EMExistStatus status, unsigned long ulChunkSize);
+    }m_data;
 public:
     SLHeadOrFoot();//for array
     SLHeadOrFoot(void * pvChunkHeadOrFoot);//for restore
@@ -31,7 +35,7 @@ public:
     EMExistStatus GetExistStatus();
     unsigned long GetChunkSize();
 public:
-    void FlushToMemory();
+    void FlushToMemory(void * pvWriteStartAddress) override;
 };
 
 #endif //MALLOC_3_CPP_SLHEADORFOOT_H
