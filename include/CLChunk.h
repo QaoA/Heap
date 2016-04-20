@@ -32,7 +32,6 @@ public:
     CLChunk(void * pvChunk, unsigned long ulChunkSize);//for normal initial
     ~CLChunk();
 public:
-    //TODO split merge remove append
     void SetChunkPointer(void * pvChunk);
     void SetSize(unsigned long ulSize);
     void SetExistStatus(EMExistStatus status);
@@ -40,20 +39,20 @@ public:
     unsigned long GetSize();
     EMExistStatus GetExistStatus();
 public:
-    CLChunk * GetLogicNextChunkBySingleLinkList();
-    CLChunk * GetLogicNextChunkByDoubleLinkList();
-    CLChunk * GetLogicPreviousChunk();
+    void * GetLogicNextChunkBySingleLinkList();
+    void * GetLogicNextChunkByDoubleLinkList();
+    void * GetLogicPreviousChunk();
     void * GetPhysicalNextChunk();
     void * GetPhysicalPreviousChunkFoot();
-    void FlushToMemory(bool isSingleLinkList);
+    void FlushToMemory(bool isSingleLinkList = false);
 public:
-    static CLChunk * GetChunkByNode(CLSingleLinkListNode *pSingleNode);
-    static CLChunk * GetChunkByNode(CLDoubleLinkListNode *pDoubleNode);
-    static void Split(const unsigned long ulNewChunkSize,CLChunk & roldChunk,CLChunk & rRestChunk);
+    static void * GetChunkByNode(CLSingleLinkListNode *pSingleNode);
+    static void * GetChunkByNode(CLDoubleLinkListNode *pDoubleNode);
+    static void Split(const unsigned long ulNewChunkSize,CLChunk & rOldChunk,CLChunk & rRestChunk);
     static void Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk);
     static void AppendToSingleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk);
     static void RemoveFromSingleLinkList(CLChunk & rPreviousChunk);
-    static void AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk,CLChunk * pNextChunk);
+    static void AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk);
     static void RemoveFromDoubleLinkList(CLChunk & rCurrentChunk);
 };
 #endif //MALLOC_3_CPP_CLCHUNK_H

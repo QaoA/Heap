@@ -21,7 +21,7 @@ public:
     void FlushToMemory(void * pvWriteStartAddress) override;
 public:
     static void AppendNextNode(CLSingleLinkListNode & rPreviousNode,CLSingleLinkListNode & rCurrentNode);
-    static void RemoveFromList(CLSingleLinkListNode & rPreviousNode);
+    static void RemoveFromList(CLSingleLinkListNode & rPreviousNode,CLSingleLinkListNode & rCurrentNode);
 };
 
 #endif //MALLOC_3_CPP_CLSINGLELINKLISTNODE_H

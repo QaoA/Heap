@@ -34,10 +34,10 @@ void CLSingleLinkListNode::AppendNextNode(CLSingleLinkListNode & rPreviousNode,C
     rCurrentNode.m_pNext = pOriginNextNode;
 }
 
-void CLSingleLinkListNode::RemoveFromList(CLSingleLinkListNode & pPreviousNode)
+void CLSingleLinkListNode::RemoveFromList(CLSingleLinkListNode & rPreviousNode,CLSingleLinkListNode & rCurrentNode)
 {
-    CLSingleLinkListNode * pCurrentNode = pPreviousNode.m_pNext;
-    CLSingleLinkListNode * pNextNode = pCurrentNode->m_pNext;
-    pPreviousNode.m_pNext = pNextNode;
-    pCurrentNode->m_pNext = NULL;
+    assert(rPreviousNode.GetNextNode() == &rCurrentNode);
+    CLSingleLinkListNode * pNextNode = rCurrentNode.m_pNext;
+    rPreviousNode.m_pNext = pNextNode;
+    rCurrentNode.m_pNext = NULL;
 }

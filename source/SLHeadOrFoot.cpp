@@ -19,7 +19,7 @@ m_data(FREE,NULL)
 }
 
 SLHeadOrFoot::SLHeadOrFoot(void * pvChunkHeadOrFoot):
-m_data(reinterpret_cast<EMExistStatus >((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) & (0x1 << ALIGN_BIT_LENGTH))
+m_data((reinterpret_cast<EMExistStatus >((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) & (0x1 << ALIGN_BIT_LENGTH)))
        ,((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) >> ALIGN_BIT_LENGTH))
 {
 }
@@ -52,5 +52,8 @@ unsigned long SLHeadOrFoot::GetChunkSize()
 
 void SLHeadOrFoot::FlushToMemory(void * pvWriteStartAddress)
 {
-    *reinterpret_cast<unsigned long *>(pvWriteStartAddress) = *reinterpret_cast<unsigned long*>(&m_data);
+    if(pvWriteStartAddress)
+    {
+        *reinterpret_cast<unsigned long *>(pvWriteStartAddress) = *reinterpret_cast<unsigned long*>(&m_data);
+    }
 }

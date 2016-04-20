@@ -21,8 +21,8 @@ public:
     CLDoubleLinkListNode * GetNextNode();
     CLDoubleLinkListNode * GetPreviousNode();
 public:
-    static void AppendToList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode);
-    static void RemoveFromList(CLDoubleLinkListNode & rCurrentNode);
+    static void AppendToList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode,CLDoubleLinkListNode * pNextNode);
+    static void RemoveFromList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode,CLDoubleLinkListNode * pNextNode);
 };
 
 #endif //MALLOC_3_CPP_CLDOUBLELINKLISTNODE_H

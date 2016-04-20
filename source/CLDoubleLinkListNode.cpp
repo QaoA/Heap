@@ -3,6 +3,7 @@
 //
 
 #include <stddef.h>
+#include <assert.h>
 #include "../include/CLDoubleLinkListNode.h"
 #include "../include/define.h"
 
@@ -15,8 +16,12 @@ m_pPrevious(NULL)
 }
 
 CLDoubleLinkListNode::CLDoubleLinkListNode(void * pvDoubleListNodeAddress):
-m_pNext(*reinterpret_cast<CLDoubleLinkListNode **>(pvDoubleListNodeAddress)),
-m_pPrevious(*reinterpret_cast<CLDoubleLinkListNode **>(GetNewPointerByOffset(pvDoubleListNodeAddress,PER_CONTROL_UNIT_SIZE)))
+m_pNext(pvDoubleListNodeAddress?
+        (*reinterpret_cast<CLDoubleLinkListNode **>(pvDoubleListNodeAddress)):
+        nullptr),
+m_pPrevious(pvDoubleListNodeAddress?
+            (*reinterpret_cast<CLDoubleLinkListNode **>(GetNewPointerByOffset(pvDoubleListNodeAddress,PER_CONTROL_UNIT_SIZE))):
+            nullptr)
 {
 
 }
@@ -44,24 +49,27 @@ CLDoubleLinkListNode * CLDoubleLinkListNode::GetPreviousNode()
     return this->m_pPrevious;
 }
 
-void CLDoubleLinkListNode::AppendToList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode)
+void CLDoubleLinkListNode::AppendToList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode,CLDoubleLinkListNode * pNextNode)
 {
-    CLDoubleLinkListNode * pNextNode = rPreviousNode.m_pNext;
+    assert(rPreviousNode.GetNextNode() == pNextNode);
     rPreviousNode.m_pNext = &rCurrentNode;
+    rCurrentNode.m_pPrevious = &rPreviousNode;
+    rCurrentNode.m_pNext = pNextNode;
     if(pNextNode)
     {
         pNextNode->m_pPrevious = &rCurrentNode;
     }
-    rCurrentNode.m_pNext = pNextNode;
-    rCurrentNode.m_pPrevious = &rPreviousNode;
 }
 
-void CLDoubleLinkListNode::RemoveFromList(CLDoubleLinkListNode & rCurrentNode)
+void CLDoubleLinkListNode::RemoveFromList(CLDoubleLinkListNode & rPreviousNode,CLDoubleLinkListNode & rCurrentNode,CLDoubleLinkListNode * pNextNode)
 {
-    CLDoubleLinkListNode * pPreviousNode = rCurrentNode.m_pPrevious;
-    CLDoubleLinkListNode * pNextNode = rCurrentNode.m_pNext;
-    pPreviousNode->m_pNext = pNextNode;
-    pNextNode->m_pPrevious = pPreviousNode;
-    rCurrentNode.m_pPrevious = NULL;
-    rCurrentNode.m_pNext = NULL;
+    assert(rPreviousNode.GetNextNode() == &rCurrentNode && rCurrentNode.GetNextNode() == pNextNode);
+
+    rCurrentNode.m_pNext = nullptr;
+    rCurrentNode.m_pPrevious = nullptr;
+    rPreviousNode.m_pNext = pNextNode;
+    if(pNextNode)
+    {
+        pNextNode->m_pPrevious = &rPreviousNode;
+    }
 }
