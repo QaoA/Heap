@@ -5,8 +5,6 @@
 #ifndef MALLOC_3_CPP_SLHEADORFOOT_H
 #define MALLOC_3_CPP_SLHEADORFOOT_H
 
-#include "ILMemoryFlusher.h"
-
 enum EMExistStatus
 {
     BUSY = 0x0,
@@ -15,27 +13,22 @@ enum EMExistStatus
 };
 
 
-struct SLHeadOrFoot:public ILMemoryFlusher
+struct SLHeadOrFoot
 {
 private:
-    struct m_data
-    {
-        EMExistStatus m_emChunkStatus:2;
-        int m_undefined:2;
-        unsigned long m_ulChunkSize:60;
-        m_data(EMExistStatus status, unsigned long ulChunkSize);
-    }m_data;
+    EMExistStatus m_emChunkStatus;
+    unsigned long m_ulChunkSize;
 public:
-    SLHeadOrFoot();//for array
+    SLHeadOrFoot();//array
     SLHeadOrFoot(void * pvChunkHeadOrFoot);//for restore
-    SLHeadOrFoot(void * pvChunkHeadOrFoot,unsigned long ulChunkSize = 0,EMExistStatus emStatus = FREE);//for normal initial
+    SLHeadOrFoot(unsigned long ulChunkSize,EMExistStatus emStatus);//for normal initial
 public:
     void SetExistStatus(EMExistStatus emStatus);
     void SetChunkSize(unsigned long ulChunkSize);
     EMExistStatus GetExistStatus();
     unsigned long GetChunkSize();
 public:
-    void FlushToMemory(void * pvWriteStartAddress) override;
+    unsigned long GetPackedData();
 };
 
 #endif //MALLOC_3_CPP_SLHEADORFOOT_H

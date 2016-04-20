@@ -6,54 +6,46 @@
 
 #include <string.h>
 
-SLHeadOrFoot::m_data::m_data(EMExistStatus emStatus, unsigned long ulChunkSize):
-m_emChunkStatus(emStatus),
-m_ulChunkSize(ulChunkSize),
-m_undefined(0)
-{
-}
-
 SLHeadOrFoot::SLHeadOrFoot():
-m_data(FREE,NULL)
+m_emChunkStatus(FREE),
+m_ulChunkSize(2*PER_CONTROL_UNIT_SIZE)
 {
 }
 
 SLHeadOrFoot::SLHeadOrFoot(void * pvChunkHeadOrFoot):
-m_data((reinterpret_cast<EMExistStatus >((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) & (0x1 << ALIGN_BIT_LENGTH)))
-       ,((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) >> ALIGN_BIT_LENGTH))
+m_emChunkStatus(reinterpret_cast<EMExistStatus >((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) & (0x1 << ALIGN_BIT_LENGTH))),
+m_ulChunkSize((*reinterpret_cast<unsigned long * >(pvChunkHeadOrFoot)) >> ALIGN_BIT_LENGTH)
 {
 }
 
-SLHeadOrFoot::SLHeadOrFoot(void * pvChunkHeadOrFoot,unsigned long ulChunkSize = 0,EMExistStatus emStatus = FREE):
-m_data(emStatus,ulChunkSize)
+SLHeadOrFoot::SLHeadOrFoot(unsigned long ulChunkSize,EMExistStatus emStatus):
+m_emChunkStatus(emStatus),
+m_ulChunkSize(ulChunkSize)
 {
-
 }
 
 void SLHeadOrFoot::SetExistStatus(EMExistStatus emStatus)
 {
-    this->m_data.m_emChunkStatus = emStatus;
+    this->m_emChunkStatus = emStatus;
 }
 
 void SLHeadOrFoot::SetChunkSize(unsigned long ulChunkSize)
 {
-    this->m_data.m_ulChunkSize = ulChunkSize >> ALIGN_BIT_LENGTH;
+    this->m_ulChunkSize = ulChunkSize;
 }
 
 EMExistStatus SLHeadOrFoot::GetExistStatus()
 {
-    return m_data.m_emChunkStatus;
+    return m_emChunkStatus;
 }
 
 unsigned long SLHeadOrFoot::GetChunkSize()
 {
-    return this->m_data.m_ulChunkSize << ALIGN_BIT_LENGTH;
+    return this->m_ulChunkSize;
 }
 
-void SLHeadOrFoot::FlushToMemory(void * pvWriteStartAddress)
+unsigned long SLHeadOrFoot::GetPackedData()
 {
-    if(pvWriteStartAddress)
-    {
-        *reinterpret_cast<unsigned long *>(pvWriteStartAddress) = *reinterpret_cast<unsigned long*>(&m_data);
-    }
+    return (m_ulChunkSize & ~(0x1 << ALIGN_BIT_LENGTH)) & m_emChunkStatus;
 }
+

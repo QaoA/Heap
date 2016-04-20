@@ -6,53 +6,27 @@
 #define MALLOC_3_CPP_CLCHUNK_H
 
 #include "SLHeadOrFoot.h"
-#include "CLSingleLinkListNode.h"
-#include "CLDoubleLinkListNode.h"
-
-#define GET_OFFSET(CLASS,MEMBER) reinterpret_cast<unsigned long>(&(reinterpret_cast<CLASS *>(0) -> MEMBER))
+#include "define.h"
 
 class CLChunk
 {
-private:
+protected:
     void * m_pvChunk;
     SLHeadOrFoot m_headOrFoot;
-    union
-    {
-        CLSingleLinkListNode m_singleListNode;
-        CLDoubleLinkListNode m_doubleListNode;
-    };
-private:
-    void * GetHead();
-    void * GetFoot();
-    void * GetNextNodeAddress();
-    void * GetPreviousNodeAddress();
 public:
     CLChunk();//for array
     explicit CLChunk(void * pvChunk);//for restore
-    CLChunk(void * pvChunk, unsigned long ulChunkSize);//for normal initial
-    ~CLChunk();
+    CLChunk(void * pvChunk, unsigned long ulChunkSize, EMExistStatus emChunkStatus);//for normal initial
+    virtual ~CLChunk();
+protected:
+    virtual void * GetHead();
+    virtual void * GetFoot();
+    virtual void * GetPhysicalNextNodeHeadAddress();
+    virtual void * GetPhysicalPreviousNodeFootAddress();
 public:
-    void SetChunkPointer(void * pvChunk);
-    void SetSize(unsigned long ulSize);
-    void SetExistStatus(EMExistStatus status);
-    void * GetChunkPointer();
-    unsigned long GetSize();
-    EMExistStatus GetExistStatus();
+    virtual void FlushToMemory() = 0;
 public:
-    void * GetLogicNextChunkBySingleLinkList();
-    void * GetLogicNextChunkByDoubleLinkList();
-    void * GetLogicPreviousChunk();
-    void * GetPhysicalNextChunk();
-    void * GetPhysicalPreviousChunkFoot();
-    void FlushToMemory(bool isSingleLinkList = false);
-public:
-    static void * GetChunkByNode(CLSingleLinkListNode *pSingleNode);
-    static void * GetChunkByNode(CLDoubleLinkListNode *pDoubleNode);
-    static void Split(const unsigned long ulNewChunkSize,CLChunk & rOldChunk,CLChunk & rRestChunk);
-    static void Merge(CLChunk & rPreviousChunk,CLChunk & rNextChunk);
-    static void AppendToSingleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk);
-    static void RemoveFromSingleLinkList(CLChunk & rPreviousChunk);
-    static void AppendToDoubleLinkList(CLChunk & rPreviousChunk,CLChunk & rCurrentChunk);
-    static void RemoveFromDoubleLinkList(CLChunk & rCurrentChunk);
+    static void PutData(void * pvAddress, unsigned long ulData);
+    static void * CountAddress(void * pvAddress, unsigned long ulDelta,bool bIsAdd = true);
 };
 #endif //MALLOC_3_CPP_CLCHUNK_H
