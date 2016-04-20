@@ -11,7 +11,7 @@ CLSingleLinkListChunk::CLSingleLinkListChunk():
 }
 
 CLSingleLinkListChunk::CLSingleLinkListChunk(void * pvChunk):
-        m_pvNextChunk(nullptr),
+        m_pvNextChunk(CountAddress(pvChunk,PER_CONTROL_UNIT_SIZE)),
         CLChunk(pvChunk)
 {
 }
@@ -44,9 +44,9 @@ void CLSingleLinkListChunk::FlushToMemory()
     }
 
     unsigned long ulHeadData = m_headOrFoot.GetPackedData();
-    putData(GetHead(),ulHeadData);
-    putData(GetFoot(),ulHeadData);
-    putData(GetNexChunkAddress(),m_pvNextChunk);
+    PutData(GetHead(),ulHeadData);
+    PutData(GetFoot(),ulHeadData);
+    PutData(GetNexChunkAddress(),m_pvNextChunk);
 }
 
 void CLSingleLinkListChunk::AppendNode(CLSingleLinkListChunk & rPreviousChunk,CLSingleLinkListChunk & rNewNode)
