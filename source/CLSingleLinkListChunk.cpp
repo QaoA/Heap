@@ -46,7 +46,7 @@ void CLSingleLinkListChunk::FlushToMemory()
     unsigned long ulHeadData = m_headOrFoot.GetPackedData();
     PutData(GetHead(),ulHeadData);
     PutData(GetFoot(),ulHeadData);
-    PutData(GetNexChunkAddress(),m_pvNextChunk);
+    PutData(GetNexChunkAddress(), reinterpret_cast<unsigned long>(m_pvNextChunk));
 }
 
 void CLSingleLinkListChunk::AppendNode(CLSingleLinkListChunk & rPreviousChunk,CLSingleLinkListChunk & rNewNode)

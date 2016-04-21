@@ -19,8 +19,11 @@ public:
     CLDoubleLinkListChunk(void * pvChunk,unsigned long ulChunkSize,EMExistStatus emChunkStatus);
     ~CLDoubleLinkListChunk();
 public:
-    static void AppenNewChunk(CLDoubleLinkListChunk & rPreviousChunk,CLDoubleLinkListChunk & rCurrentChunk);
-    static void RemoveChunk(CLDoubleLinkListChunk & rCurrentChunk)
+    void * GetLogicNextChunk();
+    void * GetLogicPreviousChunk();
+public:
+    static void AppenNewChunk(CLDoubleLinkListChunk & rPreviousChunk,CLDoubleLinkListChunk & rNewChunk);
+    static void RemoveChunk(CLDoubleLinkListChunk & rCurrentChunk);
 };
 
 #endif //MALLOC_3_CPP_CLDOUBLELINKLISTCHUNK_H
