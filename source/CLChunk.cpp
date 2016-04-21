@@ -29,6 +29,21 @@ virtual CLChunk::~CLChunk()
 {
 }
 
+unsigned long CLChunk::GetSize()
+{
+    return m_headOrFoot.GetChunkSize();
+}
+
+EMExistStatus CLChunk::GetStatus()
+{
+    return m_headOrFoot.GetExistStatus();
+}
+
+void * CLChunk::GetChunkPointer()
+{
+    return m_pvChunk;
+}
+
 void * CLChunk::GetHead()
 {
     if(m_pvChunk)
@@ -75,7 +90,7 @@ void CLChunk::PutData(void * pvAddress, unsigned long ulData)
     *reinterpret_cast<unsigned long *>(pvAddress) = ulData;
 }
 
-void * CountAddress(void * pvAddress, unsigned long ulDelta,bool bIsAdd)
+void * CLChunk::CountAddress(void * pvAddress, unsigned long ulDelta,bool bIsAdd)
 {
     if(bIsAdd)
     {

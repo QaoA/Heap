@@ -18,6 +18,10 @@ public:
     explicit CLChunk(void * pvChunk);//for restore
     CLChunk(void * pvChunk, unsigned long ulChunkSize, EMExistStatus emChunkStatus);//for normal initial
     virtual ~CLChunk();
+public:
+    virtual unsigned long GetSize();
+    virtual EMExistStatus GetStatus();
+    virtual void * GetChunkPointer();
 protected:
     virtual void * GetHead();
     virtual void * GetFoot();

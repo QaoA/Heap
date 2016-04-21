@@ -5,14 +5,56 @@
 #include <assert.h>
 #include "../include/CLFreeChunksManager.h"
 
-CLFreeChunksManager::CLFreeChunksManager(void * InitMemory, const unsigned long ulInitMemorySize):
+CLFreeChunksManager::CLFreeChunksManager()
 {
-    assert((ulInitMemorySize - 2*PER_CONTROL_UNIT_SIZE)% DEFAULT_ALLOCATE_BLOCK_SIZE == 0);
-    SLHeadOrFoot InitMemoryControlBlock(ulInitMemorySize,BUSY);
-    InitMemoryControlBlock.FlushToMemory(InitMemory);
-    InitMemoryControlBlock.FlushToMemory(GetNewPointerByOffset(InitMemory,ulInitMemorySize - PER_CONTROL_UNIT_SIZE));
+}
 
-    CLChunk largeChunk(GetNewPointerByOffset(InitMemory,PER_CONTROL_UNIT_SIZE),
-                       ulInitMemorySize - 2*PER_CONTROL_UNIT_SIZE);
-    CLChunk::AppendToDoubleLinkList()
+CLFreeChunksManager::~CLFreeChunksManager()
+{
+}
+
+int CLFreeChunksManager::CountIndex(unsigned long ulChunkSize)
+{
+    assert(ulChunkSize - 2*PER_CONTROL_UNIT_SIZE >= MIN_ALLOCATE_BLOCK_SIZE);
+    int index = static_cast<int>((ulChunkSize - 2*PER_CONTROL_UNIT_SIZE)/MIN_ALLOCATE_BLOCK_SIZE) - 1;
+
+    if(index >= FREE_LISTS_SIZE)
+    {
+        return FREE_LISTS_SIZE;
+    }
+
+    return index;
+}
+
+unsigned long CLFreeChunksManager::AlignSize(unsigned long ulChunkSize)
+{
+    if(ulChunkSize == 0)
+    {
+        return MIN_ALLOCATE_BLOCK_SIZE;
+    }
+    unsigned long ulAlignSize = ulChunkSize & ~(0x1 << ALIGN_BIT_LENGTH);
+    if(ulAlignSize == ulChunkSize)
+    {
+        return ulChunkSize;
+    }
+
+    return ulAlignSize + 1;
+}
+
+void CLFreeChunksManager::AppendChunk(CLDoubleLinkListChunk & rNewChunk)
+{
+    unsigned long ulChunkSize = rNewChunk.GetSize();
+    CLDoubleLinkListChunk::AppenNewChunk(m_FreeLists[CountIndex(ulChunkSize)],rNewChunk);
+}
+
+//TODO complete this function,continue with find chunk from FREELIST
+CLChunk CLFreeChunksManager::GetChunk(unsigned long ulChunkSize)
+{
+    CLChunk newChunk;
+    if(ulChunkSize > MAX_ALLOCATE_BLOCK_SIZE)
+    {
+        return newChunk;
+    }
+
+    for()
 }

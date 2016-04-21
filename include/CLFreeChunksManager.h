@@ -5,18 +5,21 @@
 #ifndef MALLOC_3_CPP_CLFREECHUNKSMANAGER_H
 #define MALLOC_3_CPP_CLFREECHUNKSMANAGER_H
 
-#include "CLChunk.h"
 #include "define.h"
+#include "CLDoubleLinkListChunk.h"
 
 class CLFreeChunksManager {
 private:
-    CLChunk m_FreeLists[FREE_LISTS_SIZE];
-    CLChunk m_LargeList;
+    CLDoubleLinkListChunk m_FreeLists[FREE_LISTS_SIZE + 1];
 public:
-    CLFreeChunksManager(void * InitMemory, const unsigned long ulInitMemorySize = DEFAULT_ALLOCATE_MEMORY_SIZE);
+    CLFreeChunksManager();
+    ~CLFreeChunksManager();
+private:
+    int CountIndex(unsigned long ulChunkSize);
+    unsigned long AlignSize(unsigned long ulChunkSize);
 public:
-    void AppendChunk(CLChunk & rNewChunk);
-    void GetAChunk(unsigned long ulChunkSize);
+    void AppendChunk(CLDoubleLinkListChunk & rNewChunk);
+    CLChunk GetChunk(unsigned long ulChunkSize);
 };
 
 

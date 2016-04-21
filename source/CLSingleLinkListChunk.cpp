@@ -69,7 +69,7 @@ void * CLSingleLinkListChunk::RemoveNode(CLSingleLinkListChunk & rPreviousChunk)
     }
 
     CLSingleLinkListChunk nextNode(pvNextNode);
-    void * pvNewNextNode = newNextNode.m_pvNextChunk;
+    void * pvNewNextNode = nextNode.m_pvNextChunk;
     nextNode.m_pvNextChunk = nullptr;
     rPreviousChunk.m_pvNextChunk = pvNewNextNode;
 
