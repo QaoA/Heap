@@ -39,7 +39,28 @@ void * CLDoubleLinkListChunk::GetLogicPreviousChunk()
     return m_pvPreviousChunk;
 }
 
-void CLDoubleLinkListChunk::AppenNewChunk(CLDoubleLinkListChunk & rPreviousChunk,CLDoubleLinkListChunk & rNewChunk)
+void CLDoubleLinkListChunk::SplitChunk(unsigned long ulChunkSize,CLDoubleLinkListChunk & originChunk,CLDoubleLinkListChunk & restChunk)
+{
+    unsigned long originChunkSize = originChunk.GetSize();
+    unsigned long ulAlignChunkSize = AlignSize(ulChunkSize);
+    if((ulAlignChunkSize + MIN_ALLOCATE_CHUNK_SIZE >= originChunkSize) || !originChunk.m_pvChunk)
+    {
+        restChunk.m_pvChunk = nullptr;
+        restChunk.m_headOrFoot.SetChunkSize(0);
+        return;
+    }
+
+    unsigned long restChunkSize = originChunk.GetSize() - ulAlignChunkSize;
+    originChunk.m_headOrFoot.SetChunkSize(ulAlignChunkSize);
+    restChunk.m_headOrFoot.SetChunkSize(restChunkSize);
+    restChunk.m_pvChunk = CountAddress(originChunk.GetChunkPointer(),ulAlignChunkSize);
+    restChunk.m_headOrFoot.SetExistStatus(FREE);
+
+    originChunk.FlushToMemory();
+    restChunk.FlushToMemory();
+}
+
+void CLDoubleLinkListChunk::AppendNewChunk(CLDoubleLinkListChunk & rPreviousChunk,CLDoubleLinkListChunk & rNewChunk)
 {
     CLDoubleLinkListChunk nextChunk(rPreviousChunk.m_pvNextChunk);
 
