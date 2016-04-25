@@ -16,6 +16,7 @@ public:
     ~CLFreeChunksManager();
 private:
     int CountIndex(unsigned long ulChunkSize);
+    void DirectAppendChunk(CLDoubleLinkListChunk & rNewChunk);
 public:
     void AppendChunk(CLDoubleLinkListChunk & rNewChunk);
     CLChunk GetChunk(unsigned long ulChunkSize);

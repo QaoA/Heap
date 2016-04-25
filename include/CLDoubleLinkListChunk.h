@@ -23,6 +23,7 @@ public:
     void * GetLogicPreviousChunk();
 public:
     static void SplitChunk(unsigned long ulChunkSize,CLDoubleLinkListChunk & originChunk,CLDoubleLinkListChunk & restChunk);
+    static CLDoubleLinkListChunk MergeNearChunk(CLDoubleLinkListChunk & currentChunk);
     static void AppendNewChunk(CLDoubleLinkListChunk & rPreviousChunk,CLDoubleLinkListChunk & rNewChunk);
     static void RemoveChunk(CLDoubleLinkListChunk & rCurrentChunk);
 };

@@ -26,7 +26,7 @@ protected:
     virtual void * GetHead();
     virtual void * GetFoot();
     virtual void * GetPhysicalNextNodeHeadAddress();
-    virtual void * GetPhysicalPreviousNodeFootAddress();
+    virtual void * GetPhysicalPreviousNodeAddress();
 public:
     virtual void FlushToMemory() = 0;
 public:

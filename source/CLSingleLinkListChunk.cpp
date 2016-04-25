@@ -49,6 +49,22 @@ void CLSingleLinkListChunk::FlushToMemory()
     PutData(GetNexChunkAddress(), reinterpret_cast<unsigned long>(m_pvNextChunk));
 }
 
+void CLSingleLinkListChunk::SetStatus(EMExistStatus status)
+{
+    m_headOrFoot.SetExistStatus(status);
+    FlushToMemory();
+}
+
+void * CLSingleLinkListChunk::GetLogicNextChunk()
+{
+    if(m_pvChunk)
+    {
+        return nullptr;
+    }
+
+    return m_pvNextChunk;
+}
+
 void CLSingleLinkListChunk::AppendNode(CLSingleLinkListChunk & rPreviousChunk,CLSingleLinkListChunk & rNewNode)
 {
     void * pvNextNode = rPreviousChunk.m_pvNextChunk;

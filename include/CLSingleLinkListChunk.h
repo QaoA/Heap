@@ -20,6 +20,9 @@ public:
     virtual ~CLSingleLinkListChunk();
     virtual void FlushToMemory() override;
 public:
+    void SetStatus(EMExistStatus status);
+    void * GetLogicNextChunk();
+public:
     static void AppendNode(CLSingleLinkListChunk & rPreviousChunk,CLSingleLinkListChunk & rNewNode);
     static void * RemoveNode(CLSingleLinkListChunk & rPreviousChunk);
 };

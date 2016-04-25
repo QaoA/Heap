@@ -5,9 +5,19 @@
 #ifndef MALLOC_3_CPP_CLALLOCATEDCHUNKS_H
 #define MALLOC_3_CPP_CLALLOCATEDCHUNKS_H
 
+#include "CLSingleLinkListChunk.h"
 
-class CLAllocatedChunks {
-
+class CLAllocatedChunks
+{
+private:
+    CLSingleLinkListChunk m_allocatedChunkHead;
+    void * m_pvListCurrentPointer;
+public:
+    CLAllocatedChunks();
+public:
+    CLChunk GetFreeOrReturnedChunk();
+    void AppendChunk(CLSingleLinkListChunk & newChunk);
+    void ReturnChunk(CLSingleLinkListChunk & returnChunk);
 };
 
 

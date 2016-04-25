@@ -69,17 +69,19 @@ void * CLChunk::GetPhysicalNextNodeHeadAddress()
 {
     if(m_pvChunk)
     {
-        return reinterpret_cast<void *>((*reinterpret_cast<unsigned long *>(m_pvChunk)) - PER_CONTROL_UNIT_SIZE);
+        return reinterpret_cast<void *>((reinterpret_cast<unsigned long>(m_pvChunk)) - PER_CONTROL_UNIT_SIZE);
     }
 
     return nullptr;
 }
 
-void * CLChunk::GetPhysicalPreviousNodeFootAddress()
+void * CLChunk::GetPhysicalPreviousNodeAddress()
 {
     if(m_pvChunk)
     {
-        return reinterpret_cast<void *>((*reinterpret_cast<unsigned long *>(m_pvChunk)) + m_headOrFoot.GetChunkSize());
+        void * pvPreviousFoot = reinterpret_cast<void *>((reinterpret_cast<unsigned long>(m_pvChunk)) + m_headOrFoot.GetChunkSize());
+        SLHeadOrFoot foot(pvPreviousFoot);
+        return reinterpret_cast<void *>((reinterpret_cast<unsigned long>(m_pvChunk)) - foot.GetChunkSize());
     }
 
     return nullptr;

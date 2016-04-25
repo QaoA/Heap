@@ -60,6 +60,30 @@ void CLDoubleLinkListChunk::SplitChunk(unsigned long ulChunkSize,CLDoubleLinkLis
     restChunk.FlushToMemory();
 }
 
+CLDoubleLinkListChunk CLDoubleLinkListChunk::MergeNearChunk(CLDoubleLinkListChunk & currentChunk)
+{
+    void * pvPreviousChunk = currentChunk.GetPhysicalPreviousNodeAddress();
+    void * pvNextChunk = currentChunk.GetPhysicalNextNodeHeadAddress();
+    CLDoubleLinkListChunk previousChunk(pvPreviousChunk);
+    CLDoubleLinkListChunk nextChunk(pvNextChunk);
+    unsigned long chunkSize = currentChunk.GetSize();
+    void * pvReturnChunk = currentChunk.m_pvChunk;
+    if(previousChunk.GetStatus() == FREE || previousChunk.GetStatus() == RETURNED)
+    {
+        pvReturnChunk = previousChunk.m_pvChunk;
+        chunkSize += previousChunk.GetSize();
+        CLDoubleLinkListChunk::RemoveChunk(previousChunk);
+    }
+    if(nextChunk.GetSize() == FREE || nextChunk.GetSize() == RETURNED)
+    {
+        chunkSize += nextChunk.GetSize();
+        CLDoubleLinkListChunk::RemoveChunk(nextChunk);
+    }
+
+    CLDoubleLinkListChunk returnChunk(pvReturnChunk,chunkSize,FREE);
+    return returnChunk;
+}
+
 void CLDoubleLinkListChunk::AppendNewChunk(CLDoubleLinkListChunk & rPreviousChunk,CLDoubleLinkListChunk & rNewChunk)
 {
     CLDoubleLinkListChunk nextChunk(rPreviousChunk.m_pvNextChunk);

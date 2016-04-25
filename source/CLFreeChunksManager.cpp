@@ -25,21 +25,32 @@ int CLFreeChunksManager::CountIndex(unsigned long ulChunkSize)
 
     return index;
 }
+void CLFreeChunksManager::DirectAppendChunk(CLDoubleLinkListChunk & rNewChunk)
+{
+    unsigned long ulChunkSize = rNewChunk.GetSize();
+    if(ulChunkSize > MIN_ALLOCATE_CHUNK_SIZE)
+    {
+        CLDoubleLinkListChunk::AppendNewChunk(m_FreeLists[CountIndex(ulChunkSize)],rNewChunk);
+    }
+}
 
 void CLFreeChunksManager::AppendChunk(CLDoubleLinkListChunk & rNewChunk)
 {
     unsigned long ulChunkSize = rNewChunk.GetSize();
-    CLDoubleLinkListChunk::AppendNewChunk(m_FreeLists[CountIndex(ulChunkSize)],rNewChunk);
+    if(ulChunkSize > MIN_ALLOCATE_CHUNK_SIZE)
+    {
+        CLDoubleLinkListChunk appendChunk = CLDoubleLinkListChunk::MergeNearChunk(rNewChunk);
+        CLDoubleLinkListChunk::AppendNewChunk(m_FreeLists[CountIndex(ulChunkSize)],appendChunk);
+    }
 }
 
-//TODO complete this function,continue with find chunk from FREELIST
 CLChunk CLFreeChunksManager::GetChunk(unsigned long ulChunkSize)
 {
-    CLChunk newChunk;
+    CLChunk nullChunk;
     unsigned long ulAlignChunkSize = AlignSize(ulChunkSize);
     if(ulAlignChunkSize > MAX_ALLOCATE_BLOCK_SIZE)
     {
-        return newChunk;
+        return nullChunk;
     }
 
     int index = CountIndex(ulAlignChunkSize);
@@ -53,6 +64,9 @@ CLChunk CLFreeChunksManager::GetChunk(unsigned long ulChunkSize)
             CLDoubleLinkListChunk returnChunk(pvReturnChunk);
             CLDoubleLinkListChunk::RemoveChunk(returnChunk);
             CLDoubleLinkListChunk::SplitChunk(ulAlignChunkSize,returnChunk,restChunk);
+            DirectAppendChunk(restChunk);
+            return returnChunk;
         }
     }
+    return nullChunk;
 }
