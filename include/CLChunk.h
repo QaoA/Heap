@@ -28,6 +28,7 @@ protected:
     virtual void * GetPhysicalNextNodeHeadAddress();
     virtual void * GetPhysicalPreviousNodeAddress();
 public:
+    virtual void * GetValidMemoryAddress() = 0;
     virtual void FlushToMemory() = 0;
 public:
     static void PutData(void * pvAddress, unsigned long ulData);

@@ -11,7 +11,7 @@ m_pvListCurrentPointer(nullptr)
 
 }
 
-CLChunk CLAllocatedChunks::GetFreeOrReturnedChunk()
+CLChunk CLAllocatedChunks::GetReturnedChunk()
 {
     if(m_pvListCurrentPointer)
     {
@@ -21,7 +21,7 @@ CLChunk CLAllocatedChunks::GetFreeOrReturnedChunk()
     for(;m_pvListCurrentPointer != nullptr;)
     {
         CLSingleLinkListChunk currentChunk(m_pvListCurrentPointer);
-        if(currentChunk.GetStatus() == FREE || currentChunk.GetStatus() == RETURNED)
+        if(currentChunk.GetStatus() == RETURNED || currentChunk.GetStatus() == FREE)
         {
             return currentChunk;
         }

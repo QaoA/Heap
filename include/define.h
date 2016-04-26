@@ -16,8 +16,9 @@ const unsigned int PER_CONTROL_UNIT_SIZE = static_cast<unsigned int>(sizeof(void
 const unsigned long DEFAULT_ALLOCATE_BLOCK_SIZE = 2*1024*1024;
 const unsigned long DEFAULT_ALLOCATE_MEMORY_SIZE = DEFAULT_ALLOCATE_BLOCK_SIZE + 2*PER_CONTROL_UNIT_SIZE;
 
-const unsigned int MAX_ALLOCATE_CHUNK_SIZE = MAX_ALLOCATE_BLOCK_SIZE + 3*PER_CONTROL_UNIT_SIZE;
-const unsigned int MIN_ALLOCATE_CHUNK_SIZE = MIN_ALLOCATE_BLOCK_SIZE + 3*PER_CONTROL_UNIT_SIZE;
+const unsigned int MIN_CHUNK_META_DATA_SIZE = 3*PER_CONTROL_UNIT_SIZE;
+const unsigned int MAX_ALLOCATE_CHUNK_SIZE = MAX_ALLOCATE_BLOCK_SIZE + MIN_CHUNK_META_DATA_SIZE;
+const unsigned int MIN_ALLOCATE_CHUNK_SIZE = MIN_ALLOCATE_BLOCK_SIZE + MIN_CHUNK_META_DATA_SIZE;
 
 inline void * GetNewPointerByOffset(void * pvPointer, unsigned long ulOffset)
 {

@@ -49,6 +49,11 @@ void CLSingleLinkListChunk::FlushToMemory()
     PutData(GetNexChunkAddress(), reinterpret_cast<unsigned long>(m_pvNextChunk));
 }
 
+void * CLSingleLinkListChunk::GetValidMemoryAddress()
+{
+    return CountAddress(m_pvChunk,2*PER_CONTROL_UNIT_SIZE);
+}
+
 void CLSingleLinkListChunk::SetStatus(EMExistStatus status)
 {
     m_headOrFoot.SetExistStatus(status);

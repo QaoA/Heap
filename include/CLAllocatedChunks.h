@@ -15,7 +15,7 @@ private:
 public:
     CLAllocatedChunks();
 public:
-    CLChunk GetFreeOrReturnedChunk();
+    CLChunk GetReturnedChunk();
     void AppendChunk(CLSingleLinkListChunk & newChunk);
     void ReturnChunk(CLSingleLinkListChunk & returnChunk);
 };

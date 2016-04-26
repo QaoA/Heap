@@ -19,6 +19,7 @@ public:
     CLSingleLinkListChunk(void * pvChunk,EMExistStatus emChunkStatus,unsigned long ulChunkSize);
     virtual ~CLSingleLinkListChunk();
     virtual void FlushToMemory() override;
+    void * GetValidMemoryAddress() override;
 public:
     void SetStatus(EMExistStatus status);
     void * GetLogicNextChunk();

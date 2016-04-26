@@ -44,9 +44,9 @@ void CLFreeChunksManager::AppendChunk(CLDoubleLinkListChunk & rNewChunk)
     }
 }
 
-CLChunk CLFreeChunksManager::GetChunk(unsigned long ulChunkSize)
+CLDoubleLinkListChunk CLFreeChunksManager::GetChunk(unsigned long ulChunkSize)
 {
-    CLChunk nullChunk;
+    CLDoubleLinkListChunk nullChunk;
     unsigned long ulAlignChunkSize = AlignSize(ulChunkSize);
     if(ulAlignChunkSize > MAX_ALLOCATE_BLOCK_SIZE)
     {

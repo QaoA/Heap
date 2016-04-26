@@ -18,6 +18,8 @@ public:
     CLDoubleLinkListChunk(void * pvChunk);
     CLDoubleLinkListChunk(void * pvChunk,unsigned long ulChunkSize,EMExistStatus emChunkStatus);
     ~CLDoubleLinkListChunk();
+    void FlushToMemory() override;
+    void * GetValidMemoryAddress() override;
 public:
     void * GetLogicNextChunk();
     void * GetLogicPreviousChunk();

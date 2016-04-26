@@ -29,6 +29,12 @@ CLDoubleLinkListChunk::~CLDoubleLinkListChunk()
 {
 }
 
+//TODO complete function FlushToMemory,GetValidMemoryAddress
+void CLDoubleLinkListChunk::FlushToMemory()
+{
+    unsigned long headData = m_headOrFoot.GetPackedData();
+}
+
 void * CLDoubleLinkListChunk::GetLogicNextChunk()
 {
     return m_pvNextChunk;
